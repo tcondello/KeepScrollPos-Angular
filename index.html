@@ -16,11 +16,45 @@
       {{ item.name }}
     </div>
   </div>
-
-
-  
-  <button ng-click="addNewItem()">
+<button ng-click="addNewItem()">
     Add New Item
   </button>
+  
+  <script>
+    angular.module("Demo", [])
+.controller("DemoCtrl", function($scope) {
+  $scope.items = [];
+  $scope.queuedItems=[];
+  $scope.moreQueue = 0;
+  
+  for (var i = 0; i < 10; i++) {
+    $scope.items[i] = {
+      id: i,
+      name: 'item ' + i
+    };
+  }
+  
+  $scope.addNewItem = function() {
+        
+    var newId = ($scope.items.length + $scope.queuedItems.length);
+    $scope.queuedItems = $scope.queuedItems.concat({
+      id: newId,
+      name: "item " + newId
+    });
+    
+    $scope.moreQueue = $scope.queuedItems.length;
+    
+  };
+
+  $scope.transferWait = function() {
+    
+    Array.prototype.push.apply($scope.items,$scope.queuedItems);
+    $scope.queuedItems = [];
+    $scope.moreQueue = 0;
+    
+  };
+
+});
+  </script>
 </body>
 </html>
